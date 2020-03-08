@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--Document type and language-->
+<html lang="en">
+<head>
+    <!--Encoding format-->
+    <meta charset="utf-8">
+    <title>GitHub Search</title>
+    <!--Adjust page size to screen device-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- jQuery method to search a GitHub user account-->
+    <script>
+        $(document).ready(function(){
+        <!--Hide table until a search is required -->
+            $("table").hide();
+            <!-- When the search button is clicked -->
+            $("button").click(function(){
+                <!-- Get from GitHub Api a User Repository Data  -->
+                $.get( "https://api.github.com/users/" + $("#user").val() + "/repos", function(data, status){
+                    <!-- Remove any possible previous search results -->
+                    $("#table tbody td").remove();
+                    <!-- For each repository put the data in the result table -->
+                    for (i = 0; i < data.length; i++) {
+                        $("table").append("<tr><td>" + data[i].name + "</td><td>" + data[i].description + "</td><td>" + data[i].stargazers_count + "</td></tr>");
+                    }
+                    <!-- When the information is ready show the table -->
+                    $("table").show();
+                });
+            });
+        });
+    </script>
+</head>
+<body/>
+<!--Main Header Displays information about the Webpage functionality-->
+<div class="jumbotron text-center">
+    <div class="container">
+        <h1>GitHub Search Tool</h1>
+        <h2><small>This searcher allows you to shearch a GitHub account and get information about its repositories.</small></h2>
+    </div>
+</div>
+<!-- Input section of the search tool -->
+<form>
+    <div class="input-group">
+        <input type="text" class="form-control" id="user" placeholder="Username">
+        <div class="input-group-btn">
+            <button class="btn btn-info" type="button">
+                <i class="glyphicon glyphicon-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+<!-- Table to display the results of the search -->
+<table id="table" class="table table-hover">
+    <thead>
+    <tr>
+        <th>Repositories</th>
+        <th>Description</th>
+        <th>Followers</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+</body>
+</html>
